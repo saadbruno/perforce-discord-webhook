@@ -1,6 +1,8 @@
 # Perforce Discord Webhook
 This is a script that posts a message to Discord every time a new changelist is submitted from the Perforce version control system.
 
+![image](https://user-images.githubusercontent.com/23201434/79544589-a1a1a900-8065-11ea-8795-1c95aba5b91a.png)
+
 ## Requirements:
 1. This was only tested with p4d running on a linux system (Ubuntu 18.04)
 2. The Perforce user needs access read access to the depot, so it can access the `p4 describe` command (more info below)
