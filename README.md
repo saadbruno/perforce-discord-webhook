@@ -68,6 +68,7 @@ For security reasons, it is better to set up a user that has only read access to
 1. On the P4Admin app, create a new group with `unset` session time out
 2. Create a new user and assign it to that group.
 3. On the permissions tab, add the following line:
+
 | Access Level | User / Group | Name | Host | Folder / File |
 | --- | --- | --- | --- | --- |
 | read | user | <username> | 127.0.0.1 | //depot/... |
