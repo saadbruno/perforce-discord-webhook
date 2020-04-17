@@ -71,6 +71,6 @@ For security reasons, it is better to set up a user that has only read access to
 
 | Access Level | User / Group | Name | Host | Folder / File |
 | --- | --- | --- | --- | --- |
-| read | user | <username> | 127.0.0.1 | //depot/... |
+| read | user | (the username you created) | 127.0.0.1 | //depot/... |
 
 This will mean this new user will have no session timeout, but will only be able to read the depot, and from the localhost.
