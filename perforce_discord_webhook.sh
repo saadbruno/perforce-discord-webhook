@@ -13,8 +13,12 @@
 
 OUTPUT=$(p4 describe -s $1)
 
-# echoes the output | only select the indented lines (which is basically the description) | Removes special characters | Converts new lines to \n (so they are sent as proper line breaks in discord)
-DESC=$(echo "$OUTPUT" | awk '/^[[:blank:]]/' | sed "s/[^a-zA-Z\ \.\,\!\?\-]//g" | awk '{printf "%s\\n", $0}')
+# echoes the output
+# | only select the indented lines (which is basically the description)
+# | escapes quotes
+# | Converts new lines to \n (so they are sent as proper line breaks in discord)
+# collapses all tabs and spaces to a single space
+DESC=$(echo "$OUTPUT" | awk '/^[[:blank:]]/' | sed s/[\'\"]/\\\'/g | awk '{printf "%s\\n", $0}' | tr -s [:space:] ' ')
 
 # this selects the user of the commit, which is basicaly the 4th column of the first line of the changelist
 USER=$(echo "$OUTPUT" | head -n 1 | cut -d" " -f4)
