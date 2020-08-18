@@ -11,8 +11,12 @@
 #
 # Note that for the p4 triggers command to work, the linux user running the p4d needs to have access to the script, and the p4 user running "p4 describe" needs read access to the depot.
 
-OUTPUT=$(p4 describe -s $1)
+# Uncomment this to enable debugging
+# exec &> $(dirname "$0")/output.log
 
+printf ":: Running perforce_discord_webhook.sh\n\n"
+
+OUTPUT=$(p4 describe -s $1)
 # echoes the output
 # | only select the indented lines (which is basically the description)
 # | escapes quotes
@@ -27,7 +31,33 @@ USER=$(echo "$OUTPUT" | head -n 1 | cut -d" " -f4)
 EMBED='{ "username":"P4V","avatar_url":"https://i.imgur.com/unlgXvg.png","embeds":[{ "title":"Change '"$1"' by '"$USER"'","color":"701425","fields":[{ "name":"Description","value":"'"$DESC"'","inline":false} ]}]}'
 
 # sends it
+printf ":: Sending webhook...\n\n"
 curl -H "Content-Type: application/json" \
 -X POST \
 -d "$EMBED" \
 $2
+
+printf "\n\n===== DEBUG =====
+:: output:
+$OUTPUT
+
+:: desc:
+$DESC
+
+:: user:
+$USER
+
+:: embed:
+$EMBED
+
+:: Arg 1:
+$1
+
+:: Arg 2:
+$2
+
+:: Linux user:
+$(whoami)
+
+:: p4 info:
+$(p4 info)"

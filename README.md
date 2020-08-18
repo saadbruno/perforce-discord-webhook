@@ -23,8 +23,8 @@ p4 login
 ```
 Followed by your password. It's easier if the user set up in this step has no session timeout, so you don't have to log in over and over. You can change that in the p4 admin app. (See suggestion below)
 
-#### Note on p4ctl
-If you're using p4ctl to manage your servers, the user set in the p4ctl config must be the same as set on item 1.2 (in the `p4 set P4USER=your.username` command)
+#### Note on p4dctl
+If you're using p4dctl to manage your servers, the user set in the p4dctl config must be the same as set on item 1.2 (in the `p4 set P4USER=your.username` command)
 
 To check that, either check the `/etc/perforce/p4dctl.conf` file or the `/etc/perforce/p4dctl.conf.d/` directory containing your server configuration file. More info [here](https://www.perforce.com/perforce/r16.1/manuals/p4sag/appendix.p4dctl.html).
 
