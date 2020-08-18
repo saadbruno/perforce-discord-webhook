@@ -12,7 +12,7 @@
 # Note that for the p4 triggers command to work, the linux user running the p4d needs to have access to the script, and the p4 user running "p4 describe" needs read access to the depot.
 
 # Uncomment this to enable debugging
-# exec &> $(dirname "$0")/output.log
+exec &> $(dirname "$0")/output.log
 
 printf ":: Running perforce_discord_webhook.sh\n\n"
 
@@ -38,6 +38,15 @@ curl -H "Content-Type: application/json" \
 $2
 
 printf "\n\n===== DEBUG =====
+:: Linux user:
+$(whoami)
+
+:: Linux path:
+$(pwd)
+
+:: p4 info:
+$(p4 info)
+
 :: output:
 $OUTPUT
 
@@ -55,9 +64,4 @@ $1
 
 :: Arg 2:
 $2
-
-:: Linux user:
-$(whoami)
-
-:: p4 info:
-$(p4 info)"
+"
