@@ -17,11 +17,15 @@ So for the script to work, the `perforce` user needs to be able to run `p4 descr
 1. Log in as the `perforce` user on the terminal by running `sudo su perforce` (followed by `bash` if needed).
 2. Set your Perforce login by running
 ```
-p4 set P4PORT=your.server.hostname:1666
+p4 set P4PORT=ssl:localhost:1666
 p4 set P4USER=your.username
+p4 trust
 p4 login
 ```
-Followed by your password. It's easier if the user set up in this step has no session timeout, so you don't have to log in over and over. You can change that in the p4 admin app. (See suggestion below)
+Followed by your password.
+
+- It's easier if the user set up in this step has no session timeout, so you don't have to log in over and over. You can change that in the p4 admin app. (See suggestion below)
+- If your server doesn't support SSL, make sure to remove `ssl:` from the `P4PORT`. Ex.: `p4 set P4PORT=localhost:1666`
 
 #### Note on p4dctl
 If you're using p4dctl to manage your servers, the user set in the p4dctl config must be the same as set on item 1.2 (in the `p4 set P4USER=your.username` command)
