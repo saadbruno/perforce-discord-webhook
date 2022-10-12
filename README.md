@@ -1,7 +1,7 @@
 # Perforce Discord Webhook
 This is a script that posts a message to Discord every time a new changelist is submitted from the Perforce version control system.
 
-![image](https://user-images.githubusercontent.com/23201434/79544589-a1a1a900-8065-11ea-8795-1c95aba5b91a.png)
+![image](./discord_message.png)
 
 ## Requirements:
 1. This was only tested with p4d running on a linux system (Ubuntu 18.04)
@@ -37,7 +37,7 @@ That's the easy part.
 1. Clone the repo, or [download the script](https://raw.githubusercontent.com/saadbruno/perforce-discord-webhook/master/perforce_discord_webhook.sh) and save it somewhere where the perforce user (or whatever user your server is running) has access to.
 2. Make sure the script is executable by running `chmod u+x perforce_discord_webhook.sh`
 
-At this point, you should already be able to run the script manually with `./perforce_discord_webhook.sh <changelist number> <discord webhook link>`
+At this point, you should already be able to run the script manually with `./perforce_discord_webhook.sh <changelist number> <discord webhook link> <issue tracker link>`
 
 ### 3. Setting up the trigger
 Perforce has a Triggers system, where you can configure the server to do actions based on triggers. We are gonna create a trigger that runs this script every time a cahngelist is submitted successfully
@@ -46,11 +46,11 @@ Perforce has a Triggers system, where you can configure the server to do actions
 2. Add a new trigger with these settings:
 ```
 Triggers:
-	discord change-commit //depot/... "/bin/bash <perforce_discord_webhook.sh location> %changelist% <discord webhook link>
+	discord change-commit //depot/... "/bin/bash <perforce_discord_webhook.sh location> %changelist% <discord webhook link> <issue tracker link>
 ```
 And replace the location and the webhook links according to your setup. Example:
 ```
-	discord change-commit //depot/... "/bin/bash /home/perforce/perforce_discord_webhook.sh %changelist% https://discordapp.com/api/webhooks/<id>/<auth>"
+	discord change-commit //depot/... "/bin/bash /home/perforce/perforce_discord_webhook.sh %changelist% https://discordapp.com/api/webhooks/<id>/<auth> https://https://<your-company>.atlassian.net/browse"
 ```
 You can also customize this to trigger only on specific directories by changing the `//depot/...` bit.
 

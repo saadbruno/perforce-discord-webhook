@@ -2,12 +2,12 @@
 
 # This script sends a changelist from perforce to a Discord webhook
 # USAGE:
-# perforce_discord_webhook.sh <changelist number> <discord webhook link>
+# perforce_discord_webhook.sh <changelist number> <discord webhook link> <issue tracker link>
 #
 # This chan be used in conjunction with the p4 triggers, so everytime a new changelist is send, this script is run automatically
 # p4 triggers example config:
 # Triggers:
-#       discord change-commit //depot/... "/bin/bash /home/perforce/perforce_discord_webhook.sh %changelist% https://discordapp.com/api/webhooks/<id>/<auth>"
+#       discord change-commit //depot/... "/bin/bash /home/perforce/perforce_discord_webhook.sh %changelist% https://discordapp.com/api/webhooks/<id>/<auth> https://<your-company>.atlassian.net/browse"
 #
 # Note that for the p4 triggers command to work, the linux user running the p4d needs to have access to the script, and the p4 user running "p4 describe" needs read access to the depot.
 
@@ -27,15 +27,24 @@ DESC=$(echo "$OUTPUT" | awk '/^[[:blank:]]/' | sed s/[\'\"]/\\\'/g | awk '{print
 # this selects the user of the commit, which is basicaly the 4th column of the first line of the changelist
 USER=$(echo "$OUTPUT" | head -n 1 | cut -d" " -f4)
 
+# parses issue number (like XXX-123) and appends it to tracker url
+if [[ "$DESC" =~ ([A-Z]{2,10}-[0-9]{1,7}) ]]
+then
+    ISSUE="${BASH_REMATCH[1]}"
+    JIRA="$3/$ISSUE"
+else
+    ISSUE="<unknown>"    
+fi
+
 # builds the embed
-EMBED='{ "username":"P4V","avatar_url":"https://i.imgur.com/unlgXvg.png","embeds":[{ "title":"Change '"$1"' by '"$USER"'","color":"701425","fields":[{ "name":"Description","value":"'"$DESC"'","inline":false} ]}]}'
+EMBED='{ "username":"P4V","avatar_url":"https://i.imgur.com/unlgXvg.png","embeds":[{ "title":"Change '"$1"' | user: '"$USER"' | issue: '"$ISSUE"'","url":"'"$JIRA"'","color":"701425","fields":[{ "name":"Description","value":"'"$DESC"'","inline":false} ]}]}'
 
 # sends it
 printf ":: Sending webhook...\n\n"
 curl -H "Content-Type: application/json" \
--X POST \
--d "$EMBED" \
-$2
+	-X POST \
+	-d "$EMBED" \
+	$2
 
 printf "\n\n===== DEBUG =====
 :: Linux user:
@@ -64,4 +73,7 @@ $1
 
 :: Arg 2:
 $2
+
+:: Arg 3:
+$3
 "
